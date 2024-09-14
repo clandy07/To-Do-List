@@ -68,7 +68,6 @@ export default function Index() {
 							<Checkbox
 								status="checked"
 								onPress={() => toggleDone(notes.indexOf(note))}
-								disabled
 							/>
 							<Text style={styles.noteText}>{note.text}</Text>
 						</Card.Content>
