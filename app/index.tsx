@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { SafeAreaView, View, TextInput, StyleSheet } from "react-native";
 import { ScrollView } from "react-native";
-import { Appbar, Button, Card, Text, Checkbox } from "react-native-paper";
+import { Appbar, Button, Card, Text } from "react-native-paper";
+import Checkbox from "../components/Checkbox";
 
 type Note = {
 	text: string;
@@ -12,11 +13,10 @@ export default function Index() {
 	const [input, setInput] = useState("");
 	const [notes, setNotes] = useState<Note[]>([]);
 
-
 	const addNote = () => {
 		if (input.trim() == "") return;
 		setNotes([...notes, { text: input, done: false }]);
-		setInput('');
+		setInput("");
 	};
 
 	const toggleDone = (index: number) => {
@@ -27,7 +27,7 @@ export default function Index() {
 	};
 
 	const incompleteNotes = notes.filter((note) => !note.done);
-  const completedNotes = notes.filter((note) => note.done);
+	const completedNotes = notes.filter((note) => note.done);
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -43,37 +43,45 @@ export default function Index() {
 					onChangeText={setInput}
 					placeholderTextColor={"gray"}
 				/>
-				<Button onPress={addNote} mode="contained">
+				<Button onPress={addNote} mode="contained" buttonColor="green">
 					Add
 				</Button>
 			</View>
 
 			<ScrollView style={styles.scrollView}>
-				{incompleteNotes.map((note, index) => (
-					<Card key={index} style={styles.card}>
-						<Card.Content style={styles.cardContent}>
-							<Checkbox
-								status={note.done ? "checked" : "unchecked"}
-								onPress={() => toggleDone(notes.indexOf(note))}
-							/>
-							<Text style={styles.noteText}>{note.text}</Text>
-						</Card.Content>
-					</Card>
-				))}
+				{incompleteNotes.length > 0 ? (
+					incompleteNotes.map((note, index) => (
+						<Card key={index} style={styles.card}>
+							<Card.Content style={styles.cardContent}>
+								<Checkbox
+									text={note.text}
+									isChecked={note.done ? true : false}
+									onPress={() => toggleDone(notes.indexOf(note))}
+								/>
+							</Card.Content>
+						</Card>
+					))
+				) : (
+					<Text style={styles.emptyText}>No tasks left!</Text>
+				)}
 
 				<Text style={styles.sectionTitle}>Completed</Text>
-				{completedNotes.map((note, index) => (
-					<Card key={index} style={styles.card}>
-						<Card.Content style={styles.cardContent}>
-							<Checkbox
-								status="checked"
-								onPress={() => toggleDone(notes.indexOf(note))}
-								disabled
-							/>
-							<Text style={styles.noteText}>{note.text}</Text>
-						</Card.Content>
-					</Card>
-				))}
+				{completedNotes.length > 0 ? (
+					completedNotes.map((note, index) => (
+						<Card key={index} style={styles.card}>
+							<Card.Content style={styles.cardContent}>
+								<Checkbox
+									text=""
+									isChecked={note.done ? true : false}
+									onPress={() => toggleDone(notes.indexOf(note))}
+								/>
+								<Text style={styles.noteText}>{note.text}</Text>
+							</Card.Content>
+						</Card>
+					))
+				) : (
+					<Text style={styles.emptyText}>No completed items!</Text>
+				)}
 			</ScrollView>
 		</SafeAreaView>
 	);
@@ -119,4 +127,10 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 		marginVertical: 10,
 	},
+	emptyText: {
+		fontSize: 16,
+		color: 'gray',
+		textAlign: 'center',
+		marginVertical: 20,
+	  },
 });
