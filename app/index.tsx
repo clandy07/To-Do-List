@@ -5,6 +5,7 @@ import { Appbar, Button, Card, Text } from "react-native-paper";
 import Checkbox from "../components/Checkbox";
 import ToggleAllDoneButton from "../components/ToggleAllDoneButton";
 import ToggleAllUndoButton from "../components/ToggleAllUndoButton";
+import DeleteTaskButton from "@/components/DeleteTaskButton";
 
 type Note = {
   text: string;
@@ -44,6 +45,11 @@ export default function Index() {
     setNotes(updatedNotes);
   };
 
+  const deleteNote = (index: number) => {
+    const updatedNotes = notes.filter((_, i) => i !== index);
+    setNotes(updatedNotes);
+  };
+
   const incompleteNotes = notes.filter((note) => !note.done);
   const completedNotes = notes.filter((note) => note.done);
 
@@ -77,6 +83,7 @@ export default function Index() {
                     isChecked={note.done ? true : false}
                     onPress={() => toggleDone(notes.indexOf(note))}
                   />
+                  <DeleteTaskButton onDelete={() => deleteNote(notes.indexOf(note))} />
                 </Card.Content>
               </Card>
             ))}
@@ -98,6 +105,7 @@ export default function Index() {
                     onPress={() => toggleDone(notes.indexOf(note))}
                   />
                   <Text style={styles.noteText}>{note.text}</Text>
+                  <DeleteTaskButton onDelete={() => deleteNote(notes.indexOf(note))} />
                 </Card.Content>
               </Card>
             ))}
@@ -135,16 +143,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 8,
     elevation: 2,
-    flexDirection: "row",
-    alignItems: "center",
   },
   cardContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 10,
   },
   noteText: {
-    marginLeft: 8,
+    flex: 1,
+    marginLeft: 10,
   },
   sectionTitle: {
     fontSize: 18,
