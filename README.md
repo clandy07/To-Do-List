@@ -4,39 +4,40 @@ A simple, single-page mobile to-do list app built with React Native and TypeScri
 
 ## Features
 
--Add Items: Quickly add new tasks to your to-do list.
--Mark as Complete/Incomplete: Toggle tasks between incomplete and completed lists.
--Edit Items: Modify the text of any task.
--Delete Items: Remove tasks from the list.
--Mass Check/Uncheck: Mark all tasks as complete or incomplete with a single button.
+-Add Items: Quickly add new tasks to your to-do list. <br />
+-Mark as Complete/Incomplete: Toggle tasks between incomplete and completed lists. <br />
+-Edit Items: Modify the text of any task. <br />
+-Delete Items: Remove tasks from the list. <br />
+-Mass Check/Uncheck: Mark all tasks as complete or incomplete with a single button. <br />
 
 ## Tech Stack
 
--React Native for cross-platform development.
--TypeScript for type safety.
--React Native Paper for UI components.
--React Native Vector Icons for customizable checkboxes.
+-React Native for cross-platform development. <br />
+-TypeScript for type safety. <br />
+-React Native Paper for UI components. <br />
+-React Native Vector Icons for customizable checkboxes. <br />
 
 ## Installation
 
 -Clone the repository:
-
+```
 git clone https://github.com/clandy07/To-Do-List.git
-
+```
 
 -Navigate to the project directory:
-
+```
 cd to-do-list
-
+```
 
 -Install dependencies:
-
+```
 npm install
-
+```
 
 -Run the app:
-
+```
 npm expo start
+```
 
 ## Google Drive link (for screenshots and video)
 https://drive.google.com/drive/folders/17bYwV-pP3gLYyaZu1A0M_cIutTJTBe6b?usp=sharing
