@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { SafeAreaView, View, TextInput, StyleSheet } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { ScrollView } from "react-native";
 import { Appbar, Button, Card, Text } from "react-native-paper";
 import Checkbox from "../components/Checkbox";
 import ToggleAllDoneButton from "../components/ToggleAllDoneButton";
 import ToggleAllUndoButton from "../components/ToggleAllUndoButton";
 import DeleteTaskButton from "@/components/DeleteTaskButton";
+import FocusedTaskModal from "@/components/FocusedTaskModel";
 
 type Note = {
   text: string;
@@ -15,6 +22,7 @@ type Note = {
 export default function Index() {
   const [input, setInput] = useState("");
   const [notes, setNotes] = useState<Note[]>([]);
+  const [focusedTask, setFocusedTask] = useState<Note | null>(null);
 
   const addNote = () => {
     if (input.trim() == "") return;
@@ -50,6 +58,14 @@ export default function Index() {
     setNotes(updatedNotes);
   };
 
+  const handleFocusTask = (task: Note) => {
+    setFocusedTask(task);
+  };
+
+  const closeFocus = () => {
+    setFocusedTask(null);
+  };
+
   const incompleteNotes = notes.filter((note) => !note.done);
   const completedNotes = notes.filter((note) => note.done);
 
@@ -76,16 +92,23 @@ export default function Index() {
         {incompleteNotes.length > 0 ? (
           <>
             {incompleteNotes.map((note, index) => (
-              <Card key={index} style={styles.card}>
-                <Card.Content style={styles.cardContent}>
-                  <Checkbox
-                    text={note.text}
-                    isChecked={note.done ? true : false}
-                    onPress={() => toggleDone(notes.indexOf(note))}
-                  />
-                  <DeleteTaskButton onDelete={() => deleteNote(notes.indexOf(note))} />
-                </Card.Content>
-              </Card>
+              <TouchableOpacity
+                key={index}
+                onPress={() => handleFocusTask(note)}
+              >
+                <Card style={styles.card}>
+                  <Card.Content style={styles.cardContent}>
+                    <Checkbox
+                      text={note.text}
+                      isChecked={note.done ? true : false}
+                      onPress={() => toggleDone(notes.indexOf(note))}
+                    />
+                    <DeleteTaskButton
+                      onDelete={() => deleteNote(notes.indexOf(note))}
+                    />
+                  </Card.Content>
+                </Card>
+              </TouchableOpacity>
             ))}
             <ToggleAllDoneButton onToggleAllDone={toggleAllDone} />
           </>
@@ -97,23 +120,36 @@ export default function Index() {
         {completedNotes.length > 0 ? (
           <>
             {completedNotes.map((note, index) => (
-              <Card key={index} style={styles.card}>
-                <Card.Content style={styles.cardContent}>
-                  <Checkbox
-                    text=""
-                    isChecked={note.done ? true : false}
-                    onPress={() => toggleDone(notes.indexOf(note))}
-                  />
-                  <Text style={styles.noteText}>{note.text}</Text>
-                  <DeleteTaskButton onDelete={() => deleteNote(notes.indexOf(note))} />
-                </Card.Content>
-              </Card>
+              <TouchableOpacity
+                key={index}
+                onPress={() => handleFocusTask(note)}
+              >
+                <Card style={styles.card}>
+                  <Card.Content style={styles.cardContent}>
+                    <Checkbox
+                      text=""
+                      isChecked={note.done ? true : false}
+                      onPress={() => toggleDone(notes.indexOf(note))}
+                    />
+                    <Text style={styles.noteText}>{note.text}</Text>
+                    <DeleteTaskButton
+                      onDelete={() => deleteNote(notes.indexOf(note))}
+                    />
+                  </Card.Content>
+                </Card>
+              </TouchableOpacity>
             ))}
             <ToggleAllUndoButton onToggleAllNotDone={toggleAllNotDone} />
           </>
         ) : (
           <Text style={styles.emptyText}>No completed items!</Text>
         )}
+        <FocusedTaskModal
+          focusedTask={focusedTask}
+          closeFocus={closeFocus}
+          deleteNote={deleteNote}
+          notes={notes}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -145,9 +181,9 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   cardContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 10,
   },
   noteText: {
