@@ -1,3 +1,4 @@
+// FocusedTaskModal.tsx
 import React from "react";
 import {
   Modal,
@@ -6,8 +7,10 @@ import {
   View,
   Text,
   StyleSheet,
+  TextInput,
 } from "react-native";
 import { Button, Card } from "react-native-paper";
+import EditTaskButton from "./EditTaskButton";
 
 type Note = {
   text: string;
@@ -19,6 +22,11 @@ interface FocusedTaskModalProps {
   closeFocus: () => void;
   deleteNote: (index: number) => void;
   notes: Note[];
+  isEditing: boolean;
+  editText: string;
+  setEditText: (text: string) => void;
+  saveEdit: () => void;
+  handleEditTask: (note: Note, index: number) => void;
 }
 
 const FocusedTaskModal: React.FC<FocusedTaskModalProps> = ({
@@ -26,6 +34,11 @@ const FocusedTaskModal: React.FC<FocusedTaskModalProps> = ({
   closeFocus,
   deleteNote,
   notes,
+  isEditing,
+  editText,
+  setEditText,
+  saveEdit,
+  handleEditTask,
 }) => {
   if (!focusedTask) {
     return null;
@@ -49,7 +62,28 @@ const FocusedTaskModal: React.FC<FocusedTaskModalProps> = ({
         <TouchableWithoutFeedback>
           <Card style={styles.focusedCard}>
             <Card.Content style={styles.cardContent}>
-              <Text style={styles.focusedText}>{focusedTask.text}</Text>
+              {isEditing ? (
+                <TextInput
+                  style={styles.editTextInput}
+                  value={editText}
+                  onChangeText={setEditText}
+                />
+              ) : (
+                <Text style={styles.focusedText}>{focusedTask.text}</Text>
+              )}
+              {isEditing ? (
+                <Button
+                  onPress={saveEdit}
+                  mode="contained"
+                  buttonColor="green"
+                  style={styles.saveButton}
+                >
+                  Save
+                </Button>
+              ) : (
+                <></>
+              )}
+
               <Button
                 onPress={handleDelete}
                 mode="contained"
@@ -93,6 +127,16 @@ const styles = StyleSheet.create({
     minWidth: 30,
     width: 60,
     alignSelf: "center",
+  },
+  editTextInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "gray",
+    padding: 10,
+    marginRight: 10,
+  },
+  saveButton: {
+    marginRight: 5,
   },
 });
 
