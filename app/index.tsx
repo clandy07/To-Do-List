@@ -5,6 +5,7 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  GestureResponderEvent,
 } from "react-native";
 import { ScrollView } from "react-native";
 import { Appbar, Button, Card, Text } from "react-native-paper";
@@ -13,6 +14,7 @@ import ToggleAllDoneButton from "../components/ToggleAllDoneButton";
 import ToggleAllUndoButton from "../components/ToggleAllUndoButton";
 import DeleteTaskButton from "@/components/DeleteTaskButton";
 import FocusedTaskModal from "@/components/FocusedTaskModel";
+import EditTaskButton from "@/components/EditTaskButton";
 
 type Note = {
   text: string;
@@ -23,6 +25,9 @@ export default function Index() {
   const [input, setInput] = useState("");
   const [notes, setNotes] = useState<Note[]>([]);
   const [focusedTask, setFocusedTask] = useState<Note | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editText, setEditText] = useState("");
+  const [editIndex, setEditIndex] = useState<number | null>(null);
 
   const addNote = () => {
     if (input.trim() == "") return;
@@ -64,8 +69,25 @@ export default function Index() {
 
   const closeFocus = () => {
     setFocusedTask(null);
+    setIsEditing(false);
   };
 
+  const handleEditTask = (note: Note, index: number) => {
+    setEditText(note.text);
+    setEditIndex(index);
+    setIsEditing(true);
+    setFocusedTask(note);
+  };
+
+  const saveEdit = () => {
+    if (editIndex !== null) {
+      const updatedNotes = [...notes];
+      updatedNotes[editIndex].text = editText;
+      setNotes(updatedNotes);
+      setIsEditing(false);
+      setEditIndex(null);
+    }
+  };
   const incompleteNotes = notes.filter((note) => !note.done);
   const completedNotes = notes.filter((note) => note.done);
 
@@ -99,13 +121,19 @@ export default function Index() {
                 <Card style={styles.card}>
                   <Card.Content style={styles.cardContent}>
                     <Checkbox
-                      text={note.text}
+                      text=""
                       isChecked={note.done ? true : false}
                       onPress={() => toggleDone(notes.indexOf(note))}
                     />
-                    <DeleteTaskButton
-                      onDelete={() => deleteNote(notes.indexOf(note))}
-                    />
+                    <Text style={styles.noteText}>{note.text}</Text>
+                    <View style={styles.buttonsContainer}>
+                      <DeleteTaskButton
+                        onDelete={() => deleteNote(notes.indexOf(note))}
+                      />
+                      <EditTaskButton
+                        onEdit={() => handleEditTask(note, index)}
+                      />
+                    </View>
                   </Card.Content>
                 </Card>
               </TouchableOpacity>
@@ -132,9 +160,14 @@ export default function Index() {
                       onPress={() => toggleDone(notes.indexOf(note))}
                     />
                     <Text style={styles.noteText}>{note.text}</Text>
-                    <DeleteTaskButton
-                      onDelete={() => deleteNote(notes.indexOf(note))}
-                    />
+                    <View style={styles.buttonsContainer}>
+                      <DeleteTaskButton
+                        onDelete={() => deleteNote(notes.indexOf(note))}
+                      />
+                      <EditTaskButton
+                        onEdit={() => handleEditTask(note, index)}
+                      />
+                    </View>
                   </Card.Content>
                 </Card>
               </TouchableOpacity>
@@ -149,6 +182,11 @@ export default function Index() {
           closeFocus={closeFocus}
           deleteNote={deleteNote}
           notes={notes}
+          isEditing={isEditing}
+          editText={editText}
+          setEditText={setEditText}
+          saveEdit={saveEdit}
+          handleEditTask={handleEditTask}
         />
       </ScrollView>
     </SafeAreaView>
@@ -185,6 +223,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     padding: 10,
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   noteText: {
     flex: 1,
