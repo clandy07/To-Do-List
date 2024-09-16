@@ -1,50 +1,43 @@
-# Welcome to your Expo app 👋
+# To-Do List App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A simple, single-page mobile to-do list app built with React Native and TypeScript, inspired by Google Keep. The app allows users to add tasks, mark them as complete or incomplete, edit tasks, and delete them. It includes the following features:
 
-## Get started
+## Features
 
-1. Install dependencies
+-Add Items: Quickly add new tasks to your to-do list.
+-Mark as Complete/Incomplete: Toggle tasks between incomplete and completed lists.
+-Edit Items: Modify the text of any task.
+-Delete Items: Remove tasks from the list.
+-Mass Check/Uncheck: Mark all tasks as complete or incomplete with a single button.
 
-   ```bash
-   npm install
-   ```
+## Tech Stack
 
-2. Start the app
+-React Native for cross-platform development.
+-TypeScript for type safety.
+-React Native Paper for UI components.
+-React Native Vector Icons for customizable checkboxes.
 
-   ```bash
-    npx expo start
-   ```
+## Installation
 
-In the output, you'll find options to open the app in a
+-Clone the repository:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+git clone https://github.com/clandy07/To-Do-List.git
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Get a fresh project
+-Navigate to the project directory:
 
-When you're ready, run:
+cd to-do-list
 
-```bash
-npm run reset-project
-```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+-Install dependencies:
 
-## Learn more
+npm install
 
-To learn more about developing your project with Expo, look at the following resources:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+-Run the app:
 
-## Join the community
+npm expo start
 
-Join our community of developers creating universal apps.
+## Google Drive link (for screenshots and video)
+https://drive.google.com/drive/folders/17bYwV-pP3gLYyaZu1A0M_cIutTJTBe6b?usp=sharing
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
